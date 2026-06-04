@@ -1,0 +1,92 @@
+// ============================================================
+// CLASS: Produk
+// ============================================================
+
+CLASS Produk:
+
+    // --- ATRIBUT ---
+    PRIVATE id_barcode  : Integer
+    PRIVATE nama        : String
+    PRIVATE foto        : String
+    PRIVATE deskripsi   : String
+    PRIVATE harga       : Decimal
+    PRIVATE stok        : Integer
+    PRIVATE berat       : Decimal
+
+    // --- CONSTRUCTOR ---
+    CONSTRUCTOR Produk(nama, foto, deskripsi, harga, stok, berat):
+        this.id_barcode = NULL           // akan diisi setelah simpan ke DB
+        this.nama       = nama
+        this.foto       = foto
+        this.deskripsi  = deskripsi
+        this.harga      = harga
+        this.stok       = stok
+        this.berat      = berat
+
+    // --- GETTERS ---
+    METHOD getIdBarcode()  : Integer RETURN this.id_barcode
+    METHOD getNama()       : String  RETURN this.nama
+    METHOD getFoto()       : String  RETURN this.foto
+    METHOD getDeskripsi()  : String  RETURN this.deskripsi
+    METHOD getHarga()      : Decimal RETURN this.harga
+    METHOD getStok()       : Integer RETURN this.stok
+    METHOD getBerat()      : Decimal RETURN this.berat
+
+    // --- SETTERS ---
+    METHOD setIdBarcode(id : Integer) : void
+        this.id_barcode = id
+
+    METHOD setNama(nama : String) : void
+        IF nama IS EMPTY THEN
+            THROW Exception("Nama produk tidak boleh kosong")
+        END IF
+        this.nama = nama
+
+    METHOD setHarga(harga : Decimal) : void
+        IF harga <= 0 THEN
+            THROW Exception("Harga harus lebih dari 0")
+        END IF
+        this.harga = harga
+
+    METHOD setStok(stok : Integer) : void
+        IF stok < 0 THEN
+            THROW Exception("Stok tidak boleh negatif")
+        END IF
+        this.stok = stok
+
+    // --- METHODS ---
+
+    METHOD updateStok(jumlah : Integer) : void
+        // jumlah bisa negatif (saat terjual) atau positif (restock)
+        IF (this.stok + jumlah) < 0 THEN
+            THROW Exception("Stok tidak mencukupi")
+        END IF
+        this.stok = this.stok + jumlah
+
+    METHOD cekKetersediaan() : Boolean
+        RETURN this.stok > 0
+
+    METHOD tampilkanDetail() : Produk
+        RETURN this
+
+    METHOD tambahProduk(data : Map) : void
+        this.nama      = data["nama"]
+        this.foto      = data["foto"]
+        this.deskripsi = data["deskripsi"]
+        this.harga     = data["harga"]
+        this.stok      = data["stok"]
+        this.berat     = data["berat"]
+
+    METHOD editProduk(data : Map) : void
+        IF data["nama"]  IS NOT EMPTY THEN this.nama  = data["nama"]  END IF
+        IF data["harga"] IS NOT EMPTY THEN this.setHarga(data["harga"]) END IF
+        IF data["stok"]  IS NOT EMPTY THEN this.setStok(data["stok"])   END IF
+        IF data["berat"] IS NOT EMPTY THEN this.berat  = data["berat"]  END IF
+
+    METHOD hapusProduk() : Boolean
+        IF this.stok > 0 THEN
+            THROW Exception("Produk masih memiliki stok, tidak bisa dihapus")
+        END IF
+        RETURN TRUE   // izinkan hapus dari DB di layer repository
+
+END CLASS
