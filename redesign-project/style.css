@@ -129,7 +129,7 @@ button.menu-button {
   width: fit-content;
   padding: 5px;
   border-radius: 14px;
-  gap: 4px;
+  gap: 10px;
   box-shadow: inset;
   border: 1.5px solid rgba(255, 255, 255, 0.350);
 }
