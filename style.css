@@ -7,6 +7,8 @@
 
 body{
     padding-top: 60px;
+     background-color: #001226;
+     color: white;
 }
 
 
@@ -28,6 +30,8 @@ body{
 
   transition: transform 0.3s ease;
   z-index: 999;
+  background-color: #001d36;
+     color: white;
 }
 
 button.menu-button {
@@ -44,6 +48,7 @@ button.menu-button {
   color: rgb(0, 0, 0);
   margin-right: 15px;
   text-decoration: none;
+  
 }
 
 /* .menu button {
@@ -180,3 +185,6 @@ div.menu {
   cursor: pointer;
 }
 
+a {
+  color: rgb(0, 111, 159);
+}
